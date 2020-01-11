@@ -18,6 +18,7 @@ function User({ user, deleteUser, userIndex }) {
       >
         Delete
       </button>
+      <hr />
     </li>
   );
 }

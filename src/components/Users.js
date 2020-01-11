@@ -1,9 +1,9 @@
 import React from "react";
+import axios from "axios";
+
 import User from "./User";
 
 function Users({ users, deleteUser }) {
-  console.log(users);
-
   return (
     <ul className="users">
       {users.map((user, index) => {
