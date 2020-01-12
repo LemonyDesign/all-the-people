@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Header from "./Header";
+import Register from "./Register";
+import Login from "./Login";
 import AddUser from "./AddUser";
 import Users from "./Users";
 import Paging from "./Paging";
@@ -10,14 +13,16 @@ function App() {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(2);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     getUsers();
-  }, [currentPage]); // Only re-run the effect if currentPage changes
+  }, [currentPage]);
 
   const getUsers = async () => {
     setLoading(true);
@@ -44,38 +49,70 @@ function App() {
 
   // NB user is different model to other users, but has required key:values for output
   // TODO: Persist array  to local storage) so don't lose added user on paging/refresh
-  const setNewUser = user => {
+  const receiveNewUser = user => {
     const userAdded = users.concat(user);
     setUsers(userAdded);
   };
 
   const receivePages = page => {
-    console.log(page);
     setCurrentPage(page);
   };
 
+  const receiveAuth = auth => {
+    localStorage.setItem("token", auth);
+  };
+
+  const receiveRegisterState = id => {
+    setIsRegistered(id);
+  };
+
+  const receiveLoginState = state => {
+    setIsLoggedIn(state);
+  };
+
+  const receiveLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.clear();
+  };
+
+  const notRegisteredNotLoggedIn = !isLoggedIn && !isRegistered;
+  const registeredNotLoggedIn = !isLoggedIn && isRegistered;
+
   return (
     <main className="maincontent">
-      <h1>Users</h1>
-      <p>Yes, we are people. Are we?</p>
+      <Header receiveLogout={receiveLogout} isLoggedIn={isLoggedIn} />
 
-      <AddUser setNewUser={setNewUser} />
+      {notRegisteredNotLoggedIn && (
+        <Register receiveRegisterState={receiveRegisterState} />
+      )}
 
-      <section className="userSection">
-        {loading ? (
-          <div>Users are loading</div>
-        ) : (
-          <Users users={users} deleteUser={deleteUser} />
-        )}
-        {error && <div className="displayError">{error.message}</div>}
-        {users && (
-          <Paging
-            receivePages={receivePages}
-            currentPage={currentPage}
-            totalPages={totalPages}
-          />
-        )}
-      </section>
+      {registeredNotLoggedIn && "Please log in to your account"}
+
+      {!isLoggedIn && (
+        <Login
+          receiveLoginState={receiveLoginState}
+          receiveAuth={receiveAuth}
+        />
+      )}
+
+      {isLoggedIn && (
+        <section className="userSection">
+          <AddUser receiveNewUser={receiveNewUser} />
+          {loading ? (
+            <div>Users are loading</div>
+          ) : (
+            <Users users={users} deleteUser={deleteUser} />
+          )}
+          {error && <div className="displayError">{error.message}</div>}
+          {users && (
+            <Paging
+              receivePages={receivePages}
+              currentPage={currentPage}
+              totalPages={totalPages}
+            />
+          )}
+        </section>
+      )}
     </main>
   );
 }

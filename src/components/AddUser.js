@@ -7,7 +7,7 @@ const initialFormState = {
   avatar: ""
 };
 
-function AddUser({ setNewUser }) {
+function AddUser({ receiveNewUser }) {
   const [form, setForm] = useState(initialFormState);
   const [userName, setUserName] = useState("");
   const [error, setError] = useState(null);
@@ -24,7 +24,9 @@ function AddUser({ setNewUser }) {
     try {
       const response = await axios.post(`https://reqres.in/api/users`, form);
       setUserName(response.data.first_name);
-      setNewUser(response.data);
+      receiveNewUser(response.data);
+
+      // clear
       setForm(initialFormState);
     } catch (err) {
       setError(err);
