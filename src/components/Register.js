@@ -13,30 +13,23 @@ function Register({ receiveRegisterState }) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
 
-  const postRegisterData = async () => {
+  const handleSubmit = async event => {
+    event.preventDefault();
     setLoading(true);
+    setSubmitted(true);
+    if (!(form.email && form.password)) {
+      return;
+    }
     try {
       const response = await axios.post(`https://reqres.in/api/register`, form);
-      receiveRegisterState(response.data.id);
+      receiveRegisterState(true);
 
-      // clear
       setForm(initialFormState);
       setLoading(false);
     } catch (err) {
       setError(err);
       setLoading(false);
     }
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    setSubmitted(true);
-    if (!(form.email && form.password) || form.password !== repeatP) {
-      return;
-    }
-
-    postRegisterData();
   };
 
   const handleChange = event => {
@@ -152,50 +145,3 @@ function Register({ receiveRegisterState }) {
 }
 
 export default Register;
-
-/*
- *
- * MEMORY LEAK ISSUE
- * need to clean up axios subscription as below
- * but how to deploy useEffect in combination with onSubmit and handleSubmit method?
- *
- */
-
-/*
-useEffect(() => {
-  const CancelToken = axios.CancelToken;
-  const source = CancelToken.source();
-
-  const postRegisterData = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        `https://reqres.in/api/register`,
-        form,
-        {
-          cancelToken: source.token
-        }
-      );
-      receiveRegisterState(response.data.id);
-
-      // clear
-      setForm(initialFormState);
-      setLoading(false);
-    } catch (err) {
-      if (axios.isCancel(err)) {
-        console.log("cancelled");
-      } else {
-        throw err;
-      }
-      setError(err);
-      setLoading(false);
-    }
-  };
-  postRegisterData();
-
-  return () => {
-    source.cancel();
-  };
-}, [])
-
-*/
