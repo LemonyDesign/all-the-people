@@ -1,0 +1,40 @@
+@import "../base/_variables.scss";
+
+.AddUser {
+  text-align: center;
+  &__title {
+    color: $main;
+    i {
+      margin-left: 0.5rem;
+    }
+  }
+  &__error {
+    color: $alert;
+  }
+  &__notice {
+    font-size: $size24;
+  }
+}
+
+.AddUserForm {
+  width: 50%;
+  &--open {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms, max-height 300ms;
+    max-height: 500px;
+  }
+  &--closed {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 300ms, opacity 300ms, max-height 300ms;
+    max-height: 0;
+  }
+
+  &__fieldset {
+    background-color: lighten($main, 20%);
+  }
+  &__input-error {
+    color: $alert;
+  }
+}

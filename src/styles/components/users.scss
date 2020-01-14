@@ -1,0 +1,9 @@
+@import "../base/_variables.scss";
+
+@include small-up {
+  .Users > ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+}

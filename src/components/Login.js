@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import "../styles/components/login.scss";
+
 const initialFormState = {
   email: "",
   password: ""
@@ -14,25 +16,25 @@ function Login({ receiveAuth, receiveLoginState }) {
 
   const postLoginData = async () => {
     setLoading(true);
+    let success = false;
     try {
       const response = await axios.post(`https://reqres.in/api/login`, form);
       receiveAuth(response.data.token);
-      receiveLoginState(true);
-
-      // clear
       setForm(initialFormState);
       setLoading(false);
+      success = true;
     } catch (err) {
       setError(err);
-      setForm(initialFormState);
       setLoading(false);
+    }
+    if (success) {
+      receiveLoginState(true);
     }
   };
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    // for basic validation
     setSubmitted(true);
     if (!(form.email && form.password)) {
       return;
@@ -48,25 +50,20 @@ function Login({ receiveAuth, receiveLoginState }) {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center"
-      }}
-    >
-      <h2>Login</h2>
-      {error && <p className="displayError">({error.message})</p>}
+    <>
+      <header>
+        <h2 className="Login__title">Log in</h2>
+      </header>
 
-      <form
-        className="LoginForm"
-        style={{
-          display: "grid",
-          alignItems: "center",
-          justifyItems: "center"
-        }}
-        onSubmit={handleSubmit}
-      >
-        <fieldset>
-          <legend>Sign in to your account</legend>
+      <form className="LoginForm" onSubmit={handleSubmit}>
+        <fieldset className="LoginForm__fieldset">
+          <legend className="show-for-sr">Sign in to your account</legend>
+          {error && (
+            <p className="Login__error">
+              Oops: {error.response.data.error}. Please try again.
+            </p>
+          )}
+
           <p>
             <label htmlFor="login-email">Email address</label>
             <input
@@ -79,7 +76,7 @@ function Login({ receiveAuth, receiveLoginState }) {
               id="login-email"
             />
             {submitted && !form.email && (
-              <span className="LoginForm__input-error --error-email">
+              <span className="LoginForm__input-error">
                 Please enter your email address.
               </span>
             )}
@@ -97,13 +94,13 @@ function Login({ receiveAuth, receiveLoginState }) {
               id="login-password"
             />
             {submitted && !form.password && (
-              <span className="LoginForm__input-error --error-email">
+              <span className="LoginForm__input-error">
                 Please enter a password.
               </span>
             )}
           </p>
-          <button className="LoginForm__btn" disabled={loading}>
-            {loading && !error ? (
+          <button className="BtnCommon BtnCommon--dark" disabled={loading}>
+            {loading ? (
               <>
                 <i className="fas fa-spinner fa-spin" />
                 loading...
@@ -113,9 +110,8 @@ function Login({ receiveAuth, receiveLoginState }) {
             )}
           </button>
         </fieldset>
-        <p>Don't have an account? Register</p>
       </form>
-    </div>
+    </>
   );
 }
 

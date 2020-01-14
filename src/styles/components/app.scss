@@ -1,0 +1,52 @@
+@import "../base/_variables.scss";
+
+.Account {
+  padding-top: $size24;
+  margin-bottom: $size30;
+  &__title {
+    font-weight: 400;
+  }
+}
+
+.Login {
+  margin-top: $size24;
+}
+
+.Register {
+  margin-top: $size30;
+  &__notice {
+    font-weight: 600;
+  }
+}
+
+// MEDIA QUERIES
+
+@include medium-up {
+  .Account {
+    padding-top: $size24;
+    &__entry {
+      display: flex;
+    }
+  }
+  .Register,
+  .Login {
+    margin-top: $size24;
+    flex: 1;
+  }
+  .Register {
+    &__notice {
+      text-align: center;
+    }
+    &__notice::before {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      content: "\f30a";
+      margin-right: 1rem;
+    }
+  }
+}

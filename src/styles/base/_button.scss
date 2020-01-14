@@ -1,0 +1,68 @@
+// Variables
+
+/* Buttons
+   ========================================================================== */
+
+.BtnCommon {
+  color: $white;
+  background-color: $grey;
+  border: 1px solid $grey;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 $size24;
+  border-radius: 4px;
+  font-size: $size14;
+  font-weight: 600;
+  white-space: nowrap;
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  outline: 1px solid transparent;
+  outline-offset: -1px; /*Safari outline bug */
+  -webkit-appearance: none;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  cursor: pointer;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+.BtnCommon:visited {
+  background-color: $main;
+  $color: $white;
+}
+.BtnCommon:hover,
+.BtnCommon:focus {
+  background-color: darken($grey, 20%);
+  border-color: darken($grey, 20%);
+  color: $white;
+}
+.BtnCommon:active {
+  top: 2px;
+}
+.BtnCommon--bordered {
+  color: $main;
+  background-color: $white;
+  border: 1px solid $main;
+}
+
+.BtnCommon--main {
+  background-color: $main;
+  border-color: $main;
+  &:hover,
+  &:focus {
+    background-color: darken($main, 20%);
+    border-color: darken($main, 20%);
+  }
+}
+
+.BtnCommon--dark {
+  background-color: darken($main, 20%);
+  border-color: darken($main, 20%);
+  &:hover,
+  &:focus {
+    background-color: darken($main, 35%);
+    border-color: darken($main, 35%);
+  }
+}

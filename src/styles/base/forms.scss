@@ -1,0 +1,48 @@
+@import "../base/_variables.scss";
+@import "../base/_button.scss";
+
+form {
+  margin: 0 auto;
+}
+input,
+textarea {
+  background-color: $white;
+  color: $dark;
+  display: inline-block;
+  transition: 300ms ease;
+  border: 0;
+  margin: 0.3rem 0;
+  padding: 1rem;
+  overflow: hidden;
+  outline: 0;
+  width: calc(100% - 2.5rem);
+}
+
+fieldset {
+  margin: 1rem 1rem 0 0;
+  padding: 1rem;
+  border: none;
+}
+
+label {
+  text-align: left;
+  font-size: 0.85rem;
+  display: inline-block;
+  width: 100%;
+  color: $dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::placeholder {
+  color: darken($pale, 20%);
+  opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: darken($dark, 20%);
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: darken($dark, 20%);
+}

@@ -1,0 +1,68 @@
+/* Variables
+   ========================================================================== */
+
+$site-width: 1040px;
+
+$white: #ffffff;
+$dark: #353535;
+$grey: #848484;
+
+$main: #77b0cc;
+$pale: #e8e8e8;
+$alert: #a60530;
+
+$link-colour: #77b0cc;
+$link-visited-colour: #77b0cc;
+$link-hover-colour: #353535;
+$focus-colour: #ffbf47;
+
+$size10: 0.625rem;
+$size12: 0.75rem;
+$size14: 0.875rem;
+$size16: 1rem;
+$size20: 1.25rem;
+$size24: 1.5rem;
+$size30: 1.875rem;
+$size32: 2rem;
+$size36: 2.25rem;
+$size42: 2.625rem;
+$size48: 3rem;
+
+/* Media queries
+      ========================================================================== */
+
+// @include for-phone-only {}
+
+// Small tablets and large smartphones (landscape view)
+$big-phone-min: 576px;
+
+// Small tablets (portrait view)
+$tablet-portrait-min: 768px;
+
+// Tablets (landscape view) and small desktops
+$tablet-landscape-min: 992px;
+
+// Desktops
+$desktop-min: 1200px;
+
+// Large Desktops
+$big-desktop-min: 1440px;
+
+/* Mixins for Media Queries
+   ========================================================================== */
+
+@mixin small-up {
+  @media (min-width: #{$big-phone-min}) {
+    @content;
+  }
+}
+@mixin medium-up {
+  @media (min-width: #{$tablet-portrait-min}) {
+    @content;
+  }
+}
+@mixin large {
+  @media (min-width: #{$desktop-min}) {
+    @content;
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/components/paging.scss";
 
 function Paging({ receivePages, currentPage, totalPages }) {
   const [clicked, setClicked] = useState(false);
@@ -14,35 +15,17 @@ function Paging({ receivePages, currentPage, totalPages }) {
   };
 
   return (
-    <nav className="paging">
+    <nav className="Paging">
       {currentPage > 1 ? (
-        <a
-          style={{
-            display: "block",
-            padding: "1rem",
-            backgroundColor: "red",
-            color: "white"
-          }}
-          onClick={handleClickPrevious}
-          className="paging__previous"
-        >
+        <a onClick={handleClickPrevious} className="Paging__previous">
           previous &larr;
         </a>
       ) : null}
 
-      <span className="paging__count">Page: {currentPage}</span>
+      <span className="Paging__count">Page: {currentPage}</span>
 
       {currentPage < totalPages ? (
-        <a
-          style={{
-            display: "block",
-            padding: "1rem",
-            backgroundColor: "green",
-            color: "white"
-          }}
-          onClick={handleClickNext}
-          className="paging__next"
-        >
+        <a onClick={handleClickNext} className="Paging__next">
           next &rarr;
         </a>
       ) : null}

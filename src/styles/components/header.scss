@@ -1,0 +1,37 @@
+@import "../base/_variables.scss";
+
+.Header {
+  background-color: $white;
+  border-bottom: 10px solid $main;
+  color: $main;
+  &__hero {
+    margin: 0 auto;
+    padding: $size20;
+    max-width: $site-width;
+    width: 100%;
+  }
+  &__title {
+    text-transform: uppercase;
+  }
+  &__tagline {
+    font-weight: 600;
+  }
+}
+
+@include medium-up {
+  .Header {
+    &__hero {
+      display: flex;
+    }
+    &__container {
+      flex: 2;
+    }
+    &__navigation {
+      flex: 1;
+      text-align: right;
+    }
+    // .BtnCommon--navigation {
+    //   text-align: right;
+    // }
+  }
+}

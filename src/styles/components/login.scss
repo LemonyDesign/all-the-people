@@ -1,0 +1,16 @@
+@import "../base/_variables.scss";
+
+.Login__title {
+  color: $main;
+}
+.Login__error {
+  color: $alert;
+}
+.LoginForm {
+  &__fieldset {
+    background-color: $main;
+  }
+  &__input-error {
+    color: $alert;
+  }
+}

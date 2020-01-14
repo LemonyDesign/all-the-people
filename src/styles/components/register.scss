@@ -1,0 +1,16 @@
+@import "../base/_variables.scss";
+
+.Register__title {
+  color: $grey;
+}
+.Register__error {
+  color: $alert;
+}
+.RegisterForm {
+  &__fieldset {
+    background-color: lighten($grey, 30%);
+  }
+  &__input-error {
+    color: $alert;
+  }
+}

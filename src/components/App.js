@@ -7,6 +7,10 @@ import AddUser from "./AddUser";
 import Users from "./Users";
 import Paging from "./Paging";
 
+import "../styles/base/base.scss";
+import "../styles/base/forms.scss";
+import "../styles/components/app.scss";
+
 function App() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,11 +22,7 @@ function App() {
 
   useEffect(() => {
     getUsers();
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    getUsers();
-  }, [currentPage]);
+  }, [isLoggedIn, currentPage]);
 
   const getUsers = async () => {
     setLoading(true);
@@ -47,8 +47,6 @@ function App() {
     setUsers(userDeleted);
   };
 
-  // NB user is different model to other users, but has required key:values for output
-  // TODO: Persist array  to local storage) so don't lose added user on paging/refresh
   const receiveNewUser = user => {
     const userAdded = users.concat(user);
     setUsers(userAdded);
@@ -75,45 +73,55 @@ function App() {
     localStorage.clear();
   };
 
-  const notRegisteredNotLoggedIn = !isLoggedIn && !isRegistered;
-  const registeredNotLoggedIn = !isLoggedIn && isRegistered;
-
   return (
-    <main className="maincontent">
+    <div>
       <Header receiveLogout={receiveLogout} isLoggedIn={isLoggedIn} />
+      <main className="Wrapper">
+        {!isLoggedIn && (
+          <section className="Account">
+            <h1 className="Account__title">Log in or Register</h1>
+            <div className="Account__entry">
+              <section className="Login">
+                {!isLoggedIn && (
+                  <Login
+                    receiveLoginState={receiveLoginState}
+                    receiveAuth={receiveAuth}
+                  />
+                )}
+              </section>
+              <section className="Register">
+                {!isRegistered && (
+                  <Register receiveRegisterState={receiveRegisterState} />
+                )}
 
-      {notRegisteredNotLoggedIn && (
-        <Register receiveRegisterState={receiveRegisterState} />
-      )}
+                {isRegistered && (
+                  <h2 className="Register__notice">Please log in!</h2>
+                )}
+              </section>
+            </div>
+          </section>
+        )}
 
-      {registeredNotLoggedIn && "Please log in to your account"}
-
-      {!isLoggedIn && (
-        <Login
-          receiveLoginState={receiveLoginState}
-          receiveAuth={receiveAuth}
-        />
-      )}
-
-      {isLoggedIn && (
-        <section className="userSection">
-          <AddUser receiveNewUser={receiveNewUser} />
-          {loading ? (
-            <div>Users are loading</div>
-          ) : (
-            <Users users={users} deleteUser={deleteUser} />
-          )}
-          {error && <div className="displayError">{error.message}</div>}
-          {users && (
-            <Paging
-              receivePages={receivePages}
-              currentPage={currentPage}
-              totalPages={totalPages}
-            />
-          )}
-        </section>
-      )}
-    </main>
+        {isLoggedIn && (
+          <section className="Users">
+            <AddUser receiveNewUser={receiveNewUser} />
+            {loading ? (
+              <div>Users are loading</div>
+            ) : (
+              <Users users={users} deleteUser={deleteUser} />
+            )}
+            {error && <div className="DisplayError">{error.message}</div>}
+            {users && (
+              <Paging
+                receivePages={receivePages}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
+            )}
+          </section>
+        )}
+      </main>
+    </div>
   );
 }
 export default App;

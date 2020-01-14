@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import "../styles/components/register.scss";
+
 const initialFormState = {
   email: "",
   password: ""
@@ -13,23 +15,33 @@ function Register({ receiveRegisterState }) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async event => {
-    event.preventDefault();
+  const postRegisterData = async () => {
     setLoading(true);
-    setSubmitted(true);
-    if (!(form.email && form.password)) {
-      return;
-    }
+    let success = false;
     try {
       const response = await axios.post(`https://reqres.in/api/register`, form);
-      receiveRegisterState(true);
-
-      setForm(initialFormState);
       setLoading(false);
+      success = true;
     } catch (err) {
       setError(err);
+      setSubmitted(false);
+      setForm(initialFormState);
+      setRepeatP("");
       setLoading(false);
     }
+    if (success) {
+      receiveRegisterState(true);
+    }
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    setSubmitted(true);
+    if (!(form.email && form.password) || form.password !== repeatP) {
+      return;
+    }
+    postRegisterData();
   };
 
   const handleChange = event => {
@@ -43,48 +55,36 @@ function Register({ receiveRegisterState }) {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center"
-      }}
-    >
-      <h2>Register</h2>
-      {error && (
-        <p className="displayError">
-          {error.response.data.error} ({error.message})
-        </p>
-      )}
+    <>
+      <header>
+        <h2 className="Register__title">Register for a new account</h2>
+      </header>
 
-      <form
-        className="RegistrationForm"
-        style={{
-          display: "grid",
-          alignItems: "center",
-          justifyItems: "center"
-        }}
-        onSubmit={handleSubmit}
-      >
-        <fieldset>
-          <legend>Register for a new account</legend>
+      <form className="RegisterForm" onSubmit={handleSubmit}>
+        <fieldset className="RegisterForm__fieldset">
+          <legend className="show-for-sr">Register for a new account</legend>
+          {error && (
+            <p className="Register__error">{error.response.data.error}</p>
+          )}
           <p>
-            <label htmlFor="registration-email">Email address</label>
+            <label htmlFor="Register-email">Email address</label>
             <input
               type="email"
               placeholder="eve.holt@reqres.in"
               name="email"
               onChange={handleChange}
               value={form.email}
-              className="RegistrationForm__input"
-              id="registration-email"
+              className="RegisterForm__input"
+              id="Register-email"
             />
             {submitted && !form.email && (
-              <span className="RegistrationForm__input-error --error-email">
+              <span className="RegisterForm__input-error">
                 Please enter your email address.
               </span>
             )}
           </p>
           <p>
-            <label htmlFor="registration-password">Password</label>
+            <label htmlFor="Register-password">Password</label>
             <input
               type="password"
               placeholder="Password"
@@ -92,19 +92,17 @@ function Register({ receiveRegisterState }) {
               onChange={handleChange}
               value={form.password}
               autoComplete="new password"
-              className="RegistrationForm__input"
-              id="registration-password"
+              className="RegisterForm__input"
+              id="Register-password"
             />
             {submitted && !form.password && (
-              <span className="RegistrationForm__input-error --error-email">
+              <span className="RegisterForm__input-error">
                 Please enter a password.
               </span>
             )}
           </p>
           <p>
-            <label htmlFor="registration-repeat-password">
-              Confirm password
-            </label>
+            <label htmlFor="Register-repeat-password">Confirm password</label>
             <input
               type="password"
               placeholder="Password"
@@ -112,22 +110,22 @@ function Register({ receiveRegisterState }) {
               onChange={handleRepeatPassword}
               value={repeatP}
               autoComplete="repeat password"
-              className="RegistrationForm__input"
+              className="RegisterForm__input"
               id="registrtation-repeat-password"
             />
             {submitted && !repeatP && (
-              <span className="RegistrationForm__input-error --error-password">
+              <span className="RegisterForm__input-error">
                 Please repeat password.
               </span>
             )}
             {submitted && repeatP !== form.password && (
-              <span className="RegistrationForm__input-error --error-repeat-password">
+              <span className="RegisterForm__input-error">
                 Passwords don't match
               </span>
             )}
           </p>
 
-          <button className="RegistrationForm__btn" disabled={loading}>
+          <button className="BtnCommon" disabled={loading}>
             {loading ? (
               <>
                 <i className="fas fa-spinner fa-spin" />
@@ -138,10 +136,37 @@ function Register({ receiveRegisterState }) {
             )}
           </button>
         </fieldset>
-        <p>Already have an account? Login</p>
       </form>
-    </div>
+    </>
   );
 }
 
 export default Register;
+
+/*
+ *
+ * THIS IS BEFORE REFACTOR
+ *
+ */
+
+// const handleSubmit = async event => {
+//   event.preventDefault();
+//   setLoading(true);
+//   setSubmitted(true);
+//   if (!(form.email && form.password)) {
+//     return;
+//   }
+//   let success = false;
+//   try {
+//     const response = await axios.post(`https://reqres.in/api/register`, form);
+//     setForm(initialFormState);
+//     setLoading(false);
+//     success = true;
+//   } catch (err) {
+//     setError(err);
+//     setLoading(false);
+//   }
+//   if (success) {
+//     receiveRegisterState(true);
+//   }
+// };

@@ -1,0 +1,26 @@
+@import "../base/_variables.scss";
+
+.Paging {
+  text-align: center;
+  margin: 1rem 0 2rem;
+  &__previous,
+  &__next,
+  &__count {
+    display: inline-block;
+    padding: 1rem;
+    font-weight: 700;
+    color: $white;
+  }
+  &__previous,
+  &__next {
+    background: $main;
+    cursor: pointer;
+    &:hover {
+      background: darken($main, 20%);
+      transition: all 0.15s ease-in;
+    }
+  }
+  &__count {
+    background: lighten($main, 20%);
+  }
+}
