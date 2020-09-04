@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 
+import useFormFields from "../hooks/useFormFields";
 import "../styles/components/register.scss";
 
 const initialFormState = {
@@ -9,11 +11,16 @@ const initialFormState = {
 };
 
 function Register({ receiveRegisterState }) {
-  const [form, setForm] = useState(initialFormState);
-  const [repeatP, setRepeatP] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [
+    form,
+    handleChange,
+    resetForm,
+    repeatP,
+    handleRepeatPassword
+  ] = useFormFields(initialFormState);
 
   const postRegisterData = async () => {
     setLoading(true);
@@ -25,8 +32,7 @@ function Register({ receiveRegisterState }) {
     } catch (err) {
       setError(err);
       setSubmitted(false);
-      setForm(initialFormState);
-      setRepeatP("");
+      resetForm();
       setLoading(false);
     }
     if (success) {
@@ -42,16 +48,6 @@ function Register({ receiveRegisterState }) {
       return;
     }
     postRegisterData();
-  };
-
-  const handleChange = event => {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value
-    });
-  };
-  const handleRepeatPassword = event => {
-    setRepeatP(event.target.value);
   };
 
   return (
@@ -141,32 +137,8 @@ function Register({ receiveRegisterState }) {
   );
 }
 
+Register.propTypes = {
+  receiveRegisterState: PropTypes.func.isRequired
+};
+
 export default Register;
-
-/*
- *
- * THIS IS BEFORE REFACTOR
- *
- */
-
-// const handleSubmit = async event => {
-//   event.preventDefault();
-//   setLoading(true);
-//   setSubmitted(true);
-//   if (!(form.email && form.password)) {
-//     return;
-//   }
-//   let success = false;
-//   try {
-//     const response = await axios.post(`https://reqres.in/api/register`, form);
-//     setForm(initialFormState);
-//     setLoading(false);
-//     success = true;
-//   } catch (err) {
-//     setError(err);
-//     setLoading(false);
-//   }
-//   if (success) {
-//     receiveRegisterState(true);
-//   }
-// };

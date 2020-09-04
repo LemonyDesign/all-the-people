@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
+
 import "../styles/components/paging.scss";
 
 function Paging({ receivePages, currentPage, totalPages }) {
@@ -32,5 +34,11 @@ function Paging({ receivePages, currentPage, totalPages }) {
     </nav>
   );
 }
+
+Paging.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  receivePages: PropTypes.func.isRequired
+};
 
 export default Paging;

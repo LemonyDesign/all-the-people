@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
 
 import User from "./User";
 import "../styles/components/users.scss";
@@ -22,5 +22,10 @@ function Users({ users, deleteUser }) {
     </section>
   );
 }
+
+Users.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteUser: PropTypes.func.isRequired
+};
 
 export default Users;

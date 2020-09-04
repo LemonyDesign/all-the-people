@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import "../styles/components/user.scss";
 
 function User({ user, deleteUser, userIndex }) {
@@ -43,5 +45,11 @@ function User({ user, deleteUser, userIndex }) {
     </li>
   );
 }
+
+User.propTypes = {
+  user: PropTypes.object.isRequired,
+  deleteUser: PropTypes.func.isRequired,
+  userIndex: PropTypes.number.isRequired
+};
 
 export default User;

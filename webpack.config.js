@@ -10,49 +10,51 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/"
+    publicPath: "/",
   },
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, "static"),
-        to: path.resolve(__dirname, "dist")
-      }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "static"),
+          to: path.resolve(__dirname, "dist"),
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
-      template: "index.html"
-    })
+      template: "index.html",
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
-        loader: require.resolve("babel-loader")
+        loader: require.resolve("babel-loader"),
       },
       {
         test: /\.scss$/,
         use: [
           {
-            loader: "style-loader"
+            loader: "style-loader",
           },
           {
-            loader: "css-loader"
+            loader: "css-loader",
           },
           {
-            loader: "sass-loader"
-          }
-        ]
+            loader: "sass-loader",
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"]
-      }
-    ]
-  }
+        use: ["file-loader"],
+      },
+    ],
+  },
 };

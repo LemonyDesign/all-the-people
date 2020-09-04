@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 
+import useFormFields from "../hooks/useFormFields";
 import "../styles/components/login.scss";
 
 const initialFormState = {
@@ -9,10 +11,11 @@ const initialFormState = {
 };
 
 function Login({ receiveAuth, receiveLoginState }) {
-  const [form, setForm] = useState(initialFormState);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+
+  const [form, handleChange, resetForm] = useFormFields(initialFormState);
 
   const postLoginData = async () => {
     setLoading(true);
@@ -20,7 +23,7 @@ function Login({ receiveAuth, receiveLoginState }) {
     try {
       const response = await axios.post(`https://reqres.in/api/login`, form);
       receiveAuth(response.data.token);
-      setForm(initialFormState);
+      resetForm();
       setLoading(false);
       success = true;
     } catch (err) {
@@ -40,13 +43,6 @@ function Login({ receiveAuth, receiveLoginState }) {
       return;
     }
     postLoginData();
-  };
-
-  const handleChange = event => {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value
-    });
   };
 
   return (
@@ -115,33 +111,9 @@ function Login({ receiveAuth, receiveLoginState }) {
   );
 }
 
+Login.propTypes = {
+  receiveAuth: PropTypes.func.isRequired,
+  receiveLoginState: PropTypes.func.isRequired
+};
+
 export default Login;
-
-/*
- *
- * THIS IS BEFORE REFACTOR
- *
- */
-// const handleSubmit = async event => {
-//   event.preventDefault();
-//   setLoading(true);
-
-//   // for basic validation
-//   setSubmitted(true);
-//   if (!(form.email && form.password)) {
-//     return;
-//   }
-//   try {
-//     const response = await axios.post(`https://reqres.in/api/login`, form);
-//     receiveAuth(response.data.token);
-//     receiveLoginState(true);
-
-//     // clear
-//     setForm(initialFormState);
-//     setLoading(false);
-//   } catch (err) {
-//     setError(err);
-//     setForm(initialFormState);
-//     setLoading(false);
-//   }
-// };

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "../styles/components/header.scss";
 
@@ -31,5 +32,10 @@ function Header({ isLoggedIn, receiveLogout }) {
     </div>
   );
 }
+
+Header.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  receiveLogout: PropTypes.func.isRequired
+};
 
 export default Header;
